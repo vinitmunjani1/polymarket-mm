@@ -1673,7 +1673,7 @@ class MarketCycler:
             if imbalance > 0:
                 if abs_imbalance < min_order_size:
                     up_size, down_size, repair_mode = compute_fv_aware_dust_repair_sizes(
-                        imbalance, fv, min_order_size, self.quote_engine.max_order_size)
+                        imbalance, fv, min_order_size, self.quote_engine.max_order_size, force_repair=True)
                 else:
                     up_size = 0
                     down_size = repair_size_or_zero(min(self.quote_engine.max_order_size, int(abs_imbalance)), min_order_size)
@@ -1681,7 +1681,7 @@ class MarketCycler:
             elif imbalance < 0:
                 if abs_imbalance < min_order_size:
                     up_size, down_size, repair_mode = compute_fv_aware_dust_repair_sizes(
-                        imbalance, fv, min_order_size, self.quote_engine.max_order_size)
+                        imbalance, fv, min_order_size, self.quote_engine.max_order_size, force_repair=True)
                 else:
                     down_size = 0
                     up_size = repair_size_or_zero(min(self.quote_engine.max_order_size, int(abs_imbalance)), min_order_size)
