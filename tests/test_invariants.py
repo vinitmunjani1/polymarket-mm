@@ -2175,6 +2175,18 @@ def test_fv_aware_dust_repair_holds_near_even_tail_to_avoid_oscillation():
     assert (up_size, down_size, mode) == (0, 0, "dust_hold_down")
 
 
+def test_fv_aware_dust_repair_forces_neutral_tail_when_closing():
+    up_size, down_size, mode = compute_fv_aware_dust_repair_sizes(
+        imbalance=-2,
+        fair_value=0.51,
+        min_order_size=5,
+        max_order_size=10,
+        force_repair=True,
+    )
+
+    assert (up_size, down_size, mode) == (5, 0, "repair_up")
+
+
 def test_close_only_subminimum_repair_mode_is_not_left_normal():
     up_size, down_size, mode = compute_inventory_repair_sizes(
         imbalance=3,

@@ -75,7 +75,8 @@ def compute_fv_aware_dust_repair_sizes(imbalance: float,
                                        fair_value: float,
                                        min_order_size: int,
                                        max_order_size: int,
-                                       neutral_band: float = 0.02) -> tuple[int, int, str]:
+                                       neutral_band: float = 0.02,
+                                       force_repair: bool = False) -> tuple[int, int, str]:
     min_order_size = max(1, int(min_order_size or 1))
     max_order_size = max(min_order_size, int(max_order_size or min_order_size))
     tail = abs(float(imbalance or 0))
@@ -93,11 +94,11 @@ def compute_fv_aware_dust_repair_sizes(imbalance: float,
         return ladder_size, 0, "repair_up"
 
     if imbalance > 0:
-        if fv >= 0.5 - neutral_band:
+        if not force_repair and fv >= 0.5 - neutral_band:
             return 0, 0, "dust_hold_up"
         return 0, min_order_size, "repair_down"
 
-    if fv <= 0.5 + neutral_band:
+    if not force_repair and fv <= 0.5 + neutral_band:
         return 0, 0, "dust_hold_down"
     return min_order_size, 0, "repair_up"
 
