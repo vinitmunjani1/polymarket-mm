@@ -523,7 +523,7 @@ def test_repair_price_cap_planner_owns_emergency_hedge_caps():
     )
 
     assert waiting == (None, False, 10.0)
-    assert active_cap.cap == 0.69
+    assert active_cap.cap == 0.47
     assert active_cap.source == "small_capital_emergency_hedge"
     assert active_cap.metadata["emergency_elapsed"] == 30.0
 

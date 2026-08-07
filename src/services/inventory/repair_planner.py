@@ -287,9 +287,13 @@ def plan_repair_price_cap(
                     metadata=metadata,
                 )
             if emergency_cap is not None:
-                cap = float(emergency_cap)
+                # Emergency repair may accelerate a hedge, never pay more than
+                # the original leg permits after the configured pair edge.
+                entry_cap = saved_repair_cap_from_state(small_capital_state, side, min_edge)
+                cap = min(float(emergency_cap), float(entry_cap)) if entry_cap is not None else float(emergency_cap)
                 source = "small_capital_emergency_hedge"
-                metadata["emergency_cap"] = cap
+                metadata["emergency_cap"] = float(emergency_cap)
+                metadata["entry_pair_cap"] = entry_cap
         elif cap >= 0.99:
             saved_cap = saved_repair_cap_from_state(small_capital_state, side, min_edge)
             metadata["saved_cap"] = saved_cap
